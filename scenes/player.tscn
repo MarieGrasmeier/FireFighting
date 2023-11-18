@@ -1,0 +1,138 @@
+[gd_scene load_steps=12 format=3 uid="uid://kicjwmh02uwf"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_wkneb"]
+[ext_resource type="PackedScene" uid="uid://djccc5r0fd045" path="res://assets/Models/MaskFP.blend" id="2_ernkq"]
+[ext_resource type="Material" uid="uid://b7tsmih2cos5f" path="res://assets/Materials/Mask.tres" id="3_7xonf"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_26tbo"]
+height = 1.6
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fgxde"]
+radius = 0.4
+height = 0.8
+
+[sub_resource type="GDScript" id="GDScript_sxroe"]
+script/source = "extends Node3D
+
+
+"
+
+[sub_resource type="Animation" id="Animation_et2q2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0yaf5"]
+resource_name = "jump"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1.62451, 0.435276),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.0523599, 0, -0.0349066), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_eqtd2"]
+resource_name = "landing"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1.62451, 0.435276),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.0523599, 0, -0.0349066), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_s7f04"]
+resource_name = "roll"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8, 1),
+"transitions": PackedFloat32Array(1, 0.5, 1, 2),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-3.14159, 0, 0), Vector3(-6.45772, 0, 0), Vector3(-6.28319, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8twm5"]
+_data = {
+"RESET": SubResource("Animation_et2q2"),
+"jump": SubResource("Animation_0yaf5"),
+"landing": SubResource("Animation_eqtd2"),
+"roll": SubResource("Animation_s7f04")
+}
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+script = ExtResource("1_wkneb")
+initial_speed = 15.0
+
+[node name="StandingCollisionShape" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_26tbo")
+
+[node name="CrouchingCollisionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+shape = SubResource("CapsuleShape3D_fgxde")
+disabled = true
+
+[node name="RayCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8, 0)
+target_position = Vector3(0, 1.6, 0)
+
+[node name="Neck" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="Head" type="Node3D" parent="Neck"]
+
+[node name="Eyes" type="Node3D" parent="Neck/Head"]
+
+[node name="Camera" type="Camera3D" parent="Neck/Head/Eyes"]
+
+[node name="Nozzle" type="Node3D" parent="Neck/Head/Eyes/Camera"]
+transform = Transform3D(1, 0, 0, 0, 0.975442, 0.220255, 0, -0.220255, 0.975442, 0.377032, -0.405418, -0.950518)
+script = SubResource("GDScript_sxroe")
+
+[node name="MaskFP" parent="Neck/Head/Eyes/Camera" instance=ExtResource("2_ernkq")]
+transform = Transform3D(-0.0111874, 0, 0.999937, -0.123178, 0.992384, -0.00137812, -0.992321, -0.123186, -0.0111022, 0, -0.018, -0.01)
+
+[node name="mask" parent="Neck/Head/Eyes/Camera/MaskFP" index="1"]
+material_override = ExtResource("3_7xonf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Neck/Head/Eyes"]
+libraries = {
+"": SubResource("AnimationLibrary_8twm5")
+}
+
+[node name="SlidingTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[connection signal="animation_finished" from="Neck/Head/Eyes/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="timeout" from="SlidingTimer" to="." method="_on_sliding_timer_timeout"]
+
+[editable path="Neck/Head/Eyes/Camera/MaskFP"]

@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://catsvmbbqm4ta"]
+
+[ext_resource type="Script" path="res://WaterParticle.gd" id="1_p7ibg"]
+[ext_resource type="Material" uid="uid://ce3oodmhfxdl4" path="res://assets/Materials/BlueWater.tres" id="2_tkdfa"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_u68rt"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_64lex"]
+
+[node name="WaterParticle" type="RigidBody3D"]
+mass = 0.01
+max_contacts_reported = 200
+contact_monitor = true
+script = ExtResource("1_p7ibg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+shape = SubResource("SphereShape3D_u68rt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+material_override = ExtResource("2_tkdfa")
+mesh = SubResource("SphereMesh_64lex")
+
+[connection signal="body_entered" from="." to="." method="_on_WaterParticle_body_entered"]

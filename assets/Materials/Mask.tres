@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://b7tsmih2cos5f"]
+
+[ext_resource type="Texture2D" uid="uid://c1hkvrqmr4q2a" path="res://assets/textures/Maskdiffuse.png" id="1_6fflc"]
+
+[resource]
+albedo_color = Color(0.180392, 0.180392, 0.180392, 1)
+albedo_texture = ExtResource("1_6fflc")
+metallic_specular = 0.0
