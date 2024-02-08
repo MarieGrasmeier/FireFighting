@@ -1,0 +1,149 @@
+[gd_scene load_steps=17 format=3 uid="uid://ccdn26nbtmpd"]
+
+[ext_resource type="PackedScene" uid="uid://e2uqe8yv1283" path="res://floor.tscn" id="1_22q1v"]
+[ext_resource type="PackedScene" uid="uid://kicjwmh02uwf" path="res://scenes/player.tscn" id="2_0v2y6"]
+[ext_resource type="Script" path="res://Area3D.gd" id="4_djc6d"]
+[ext_resource type="Material" uid="uid://wl4asprlmwrc" path="res://assets/Materials/SmokeMaterial.tres" id="5_lkrs8"]
+[ext_resource type="PackedScene" uid="uid://cojtxp8ni4dmc" path="res://smoke.tscn" id="6_0hj5f"]
+[ext_resource type="PackedScene" uid="uid://wbvcwi0epmbb" path="res://fuel_voxel2.tscn" id="6_nagxi"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_j0880"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_w3ocy"]
+sky_material = SubResource("ProceduralSkyMaterial_j0880")
+
+[sub_resource type="Environment" id="Environment_c7di6"]
+background_mode = 2
+sky = SubResource("Sky_w3ocy")
+tonemap_mode = 2
+ssao_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_spg46"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_qxohg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bypkk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_8u16e"]
+
+[sub_resource type="Gradient" id="Gradient_mkqay"]
+offsets = PackedFloat32Array(0.198157, 0.62212)
+colors = PackedColorArray(0, 0, 0, 1, 0.533037, 0.533037, 0.533037, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gkwr7"]
+gradient = SubResource("Gradient_mkqay")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0i4lp"]
+lifetime_randomness = 0.32
+emission_shape = 1
+emission_sphere_radius = 2.0
+direction = Vector3(0, 1, 0)
+spread = 10.57
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+color = Color(0.368627, 0.368627, 0.368627, 1)
+color_ramp = SubResource("GradientTexture1D_gkwr7")
+
+[node name="CompartmentFire" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.72955, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_c7di6")
+
+[node name="Floor" parent="." instance=ExtResource("1_22q1v")]
+
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("2_0v2y6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.4072, 2.83568, 18.956)
+
+[node name="Compartment" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6417, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Compartment"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Compartment/StaticBody3D"]
+transform = Transform3D(0.262581, 0, 0, 0, 1.81658, 0, 0, 0, 7.45985, -0.96995, 0.246277, 1.84481)
+shape = SubResource("BoxShape3D_spg46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Compartment/StaticBody3D/CollisionShape3D"]
+mesh = SubResource("BoxMesh_qxohg")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Compartment/StaticBody3D"]
+transform = Transform3D(-1.14463e-08, -7.97409, 0, 0.261861, -3.48558e-07, 0, 0, 0, 7.45985, -4.73564, 1.25426, 1.84481)
+shape = SubResource("BoxShape3D_spg46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Compartment/StaticBody3D/CollisionShape3D4"]
+mesh = SubResource("BoxMesh_qxohg")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Compartment/StaticBody3D"]
+transform = Transform3D(-0.00168192, 0, 7.45969, 0, 1.81658, 0, -0.262575, 0, -0.047783, -4.62152, 0.246277, -1.74971)
+shape = SubResource("BoxShape3D_spg46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Compartment/StaticBody3D/CollisionShape3D3"]
+transform = Transform3D(1, 0, 2.98023e-08, 0, 1, 0, -4.36557e-11, 0, 1, 0.495094, 0, 0.000112057)
+mesh = SubResource("BoxMesh_qxohg")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Compartment/StaticBody3D"]
+transform = Transform3D(-0.0016838, 0, 6.16274, 0, 1.81658, 0, -0.262868, 0, -0.0394753, -5.26544, 0.246277, 5.76489)
+shape = SubResource("BoxShape3D_spg46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Compartment/StaticBody3D/CollisionShape3D5"]
+transform = Transform3D(1, 0, 2.98023e-08, 0, 1, 0, -4.36557e-11, 0, 1, 0.495094, 0, 0.000112057)
+mesh = SubResource("BoxMesh_qxohg")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Compartment/StaticBody3D"]
+transform = Transform3D(0.262581, 0, 0, 0, 1.81658, 0, 0, 0, 7.45985, -8.33015, 0.246277, 1.84481)
+shape = SubResource("BoxShape3D_spg46")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Compartment/StaticBody3D/CollisionShape3D2"]
+mesh = SubResource("BoxMesh_qxohg")
+skeleton = NodePath("../..")
+
+[node name="SmokeLayer" type="Area3D" parent="."]
+transform = Transform3D(7.20957, 0, 0, 0, 0.84593, 0, 0, 0, 7.29583, -23.3314, 0.811739, 2.0914)
+script = ExtResource("4_djc6d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SmokeLayer"]
+shape = SubResource("BoxShape3D_bypkk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SmokeLayer/CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.991602, 0, 0, -0.0289074)
+material_override = ExtResource("5_lkrs8")
+mesh = SubResource("BoxMesh_8u16e")
+
+[node name="Smoke" parent="." instance=ExtResource("6_0hj5f")]
+transform = Transform3D(-0.0204702, 0.105514, -0.430683, -0.137691, 0.0861705, 0.176456, 0.0847348, 0.165514, 0.182691, -20.2076, 0.927628, 5.81169)
+amount = 400
+lifetime = 9.23
+preprocess = 0.92
+process_material = SubResource("ParticleProcessMaterial_0i4lp")
+
+[node name="FuelVoxel" parent="." instance=ExtResource("6_nagxi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.2888, -0.00194979, 0.234433)
+
+[node name="FuelVoxel2" parent="." instance=ExtResource("6_nagxi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.2888, -0.00194979, 0.709287)
+
+[node name="FuelVoxel3" parent="." instance=ExtResource("6_nagxi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.2888, -0.00194979, 1.25195)
+
+[node name="FuelVoxel4" parent="." instance=ExtResource("6_nagxi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.2888, -0.00194979, -0.251773)
+
+[node name="FuelVoxel5" parent="." instance=ExtResource("6_nagxi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.8045, -0.00194979, -0.251773)
+
+[node name="FuelVoxel6" parent="." instance=ExtResource("6_nagxi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.8045, -0.00194979, 0.227292)
+
+[node name="FuelVoxel7" parent="." instance=ExtResource("6_nagxi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.8045, -0.00194979, 0.753171)
+
+[connection signal="body_entered" from="SmokeLayer" to="Player" method="_on_smoke_layer_body_entered"]
+[connection signal="body_exited" from="SmokeLayer" to="Player" method="_on_smoke_layer_body_exited"]

@@ -1,8 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://kicjwmh02uwf"]
+[gd_scene load_steps=18 format=3 uid="uid://kicjwmh02uwf"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_wkneb"]
+[ext_resource type="PackedScene" uid="uid://dn1xptnhjb55a" path="res://assets/Models/FireNozzleHollow.blend" id="2_7c3hl"]
 [ext_resource type="PackedScene" uid="uid://djccc5r0fd045" path="res://assets/Models/MaskFP.blend" id="2_ernkq"]
 [ext_resource type="Material" uid="uid://b7tsmih2cos5f" path="res://assets/Materials/Mask.tres" id="3_7xonf"]
+[ext_resource type="Material" uid="uid://ce3oodmhfxdl4" path="res://assets/Materials/BlueWater.tres" id="3_n6kdc"]
+[ext_resource type="Material" uid="uid://wl4asprlmwrc" path="res://assets/Materials/SmokeMaterial.tres" id="6_jfbdg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_26tbo"]
 height = 1.6
@@ -16,6 +19,25 @@ script/source = "extends Node3D
 
 
 "
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_idh0b"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 0.25
+emission_ring_radius = 0.02
+emission_ring_inner_radius = 0.02
+direction = Vector3(0, 0, -1)
+spread = 0.0
+gravity = Vector3(0, -9.81, 0)
+initial_velocity_min = 15.0
+initial_velocity_max = 15.0
+scale_min = 0.01
+scale_max = 0.01
+color = Color(0.537255, 0.768627, 0.996078, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_fqsf4"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_ihf1k"]
 
 [sub_resource type="Animation" id="Animation_et2q2"]
 length = 0.001
@@ -114,14 +136,39 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 [node name="Camera" type="Camera3D" parent="Neck/Head/Eyes"]
 
 [node name="Nozzle" type="Node3D" parent="Neck/Head/Eyes/Camera"]
-transform = Transform3D(1, 0, 0, 0, 0.975442, 0.220255, 0, -0.220255, 0.975442, 0.377032, -0.405418, -0.950518)
+transform = Transform3D(1, 0, 0, 0, 0.975917, -0.218143, 0, 0.218143, 0.975917, 0.377032, -0.429382, -0.569808)
 script = SubResource("GDScript_sxroe")
+
+[node name="FireNozzleHollow" parent="Neck/Head/Eyes/Camera/Nozzle" instance=ExtResource("2_7c3hl")]
+transform = Transform3D(1, 0, 0, 0, 1, -1.49012e-08, 0, 1.49012e-08, 1, 0, 0, 0)
+
+[node name="StreamVisuals" type="GPUParticles3D" parent="Neck/Head/Eyes/Camera/Nozzle"]
+transform = Transform3D(1, 0, 0, 0, 1, -1.3411e-07, 0, 1.3411e-07, 1, 0.00423914, 0.00972134, -0.218036)
+material_override = ExtResource("3_n6kdc")
+cast_shadow = 0
+amount = 10000
+lifetime = 1.57
+randomness = 1.0
+fixed_fps = 50
+process_material = SubResource("ParticleProcessMaterial_idh0b")
+draw_pass_1 = SubResource("SphereMesh_fqsf4")
 
 [node name="MaskFP" parent="Neck/Head/Eyes/Camera" instance=ExtResource("2_ernkq")]
 transform = Transform3D(-0.0111874, 0, 0.999937, -0.123178, 0.992384, -0.00137812, -0.992321, -0.123186, -0.0111022, 0, -0.018, -0.01)
 
 [node name="mask" parent="Neck/Head/Eyes/Camera/MaskFP" index="1"]
 material_override = ExtResource("3_7xonf")
+
+[node name="MaskBlind" type="MeshInstance3D" parent="Neck/Head/Eyes/Camera"]
+transform = Transform3D(1.59465, 0, 0, 0, 0.998857, 0, 0, 0, 0.441405, 0, 0, -0.294376)
+material_override = ExtResource("6_jfbdg")
+mesh = SubResource("QuadMesh_ihf1k")
+
+[node name="MaskBlind2" type="MeshInstance3D" parent="Neck/Head/Eyes/Camera/MaskBlind"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.129664)
+material_override = ExtResource("6_jfbdg")
+mesh = SubResource("QuadMesh_ihf1k")
+skeleton = NodePath("../..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Neck/Head/Eyes"]
 libraries = {

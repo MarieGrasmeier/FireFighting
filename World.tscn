@@ -1,9 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://o7fs5sscfeas"]
+[gd_scene load_steps=7 format=3 uid="uid://o7fs5sscfeas"]
 
-[ext_resource type="Material" uid="uid://cove73h876n5r" path="res://Brown.tres" id="1_32hxm"]
-[ext_resource type="Script" path="res://FireDynamic.gd" id="2_n4pfn"]
+[ext_resource type="PackedScene" uid="uid://e2uqe8yv1283" path="res://floor.tscn" id="2_gi8d7"]
 [ext_resource type="PackedScene" uid="uid://kicjwmh02uwf" path="res://scenes/player.tscn" id="3_0xbxq"]
-[ext_resource type="Texture2D" uid="uid://d2w6cys4brngf" path="res://assets/textures/Smoke30Frames_0.png" id="4_txf7q"]
+[ext_resource type="PackedScene" uid="uid://cmll1kpora470" path="res://fuel_voxel.tscn" id="4_jclt7"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ys0ly"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -24,62 +23,6 @@ tonemap_exposure = 0.1
 fog_light_color = Color(1, 1, 1, 1)
 fog_light_energy = 0.5
 
-[sub_resource type="BoxMesh" id="BoxMesh_2hori"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_equ3t"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ouonn"]
-
-[sub_resource type="Curve" id="Curve_evvpf"]
-max_value = 2.0
-_data = [Vector2(0.00649349, 0.0105263), 0.0, 0.0, 0, 0, Vector2(0.142857, 1.47368), 0.0, 0.0, 0, 0, Vector2(0.350649, 1.47368), -0.756491, -0.756491, 0, 0, Vector2(0.545455, 0.136842), -0.918596, -0.918596, 0, 0, Vector2(1, 0.0421052), -0.0279491, 0.0, 0, 0]
-point_count = 5
-
-[sub_resource type="CurveTexture" id="CurveTexture_2hu7h"]
-curve = SubResource("Curve_evvpf")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gg0p1"]
-lifetime_randomness = 1.0
-emission_shape = 1
-emission_sphere_radius = 1.0
-direction = Vector3(0, 1, 0)
-spread = 5.0
-gravity = Vector3(0, 0, 0)
-initial_velocity_min = 1.0
-initial_velocity_max = 4.0
-angular_velocity_max = 5.0
-angle_max = 360.0
-scale_max = 4.0
-scale_curve = SubResource("CurveTexture_2hu7h")
-color = Color(0.858824, 0.384314, 0.160784, 1)
-hue_variation_max = 0.16
-anim_speed_max = 1.62
-anim_offset_max = 0.191
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_01t4b"]
-transparency = 1
-blend_mode = 1
-albedo_color = Color(0.964706, 0.588235, 0.270588, 1)
-albedo_texture = ExtResource("4_txf7q")
-albedo_texture_force_srgb = true
-roughness = 0.0
-emission_enabled = true
-emission = Color(0.898039, 0.435294, 0.0862745, 1)
-billboard_mode = 3
-particles_anim_h_frames = 6
-particles_anim_v_frames = 5
-particles_anim_loop = false
-
-[sub_resource type="QuadMesh" id="QuadMesh_pb0fq"]
-material = SubResource("StandardMaterial3D_01t4b")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_bas6i"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_0cpu0"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s2e3i"]
-albedo_color = Color(0.0823529, 0.568627, 0.34902, 1)
-
 [node name="Node3D" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -90,7 +33,7 @@ light_volumetric_fog_energy = 0.0
 light_angular_distance = 13.36
 
 [node name="Player" parent="." instance=ExtResource("3_0xbxq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8656, 5.30205)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.842428, 11.9145)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_n83ai")
@@ -99,498 +42,94 @@ environment = SubResource("Environment_n83ai")
 transform = Transform3D(0.875667, 0.202384, -0.438461, -8.88179e-16, 0.907946, 0.419088, 0.482916, -0.366982, 0.795058, -3.3211, 2.16119, 4.28636)
 visible = false
 
-[node name="FuelVoxel" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.527565, 0)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel2" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.527565, 1.01886)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel2"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel2"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel2/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel2"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel2"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel3" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.527565, 2.11004)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel3"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel3"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel3/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel3"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel3"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel4" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.527565, 3.18218)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel4"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel4"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel4/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel4"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel4"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel13" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.09368, 0.527565, 0)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel13"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel13"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel13/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel13"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel13"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel14" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.09368, 0.527565, 1.01886)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel14"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel14"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel14/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel14"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel14"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel15" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.09368, 0.527565, 2.11004)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel15"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel15"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel15/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel15"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel15"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel16" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.09368, 0.527565, 3.18218)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel16"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel16"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel16/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel16"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel16"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel5" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.11044, 0.527565, 3.18218)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel5"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel5"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel5/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel5"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel5"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel6" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.11044, 0.527565, 2.05346)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel6"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel6"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel6/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel6"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel6"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel7" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.11044, 0.527565, 1.09635)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel7"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel7"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel7/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel7"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel7"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel17" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.837136, 1.69669, 1.09635)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel17"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel17"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel17/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel17"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel17"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel18" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.559742, 1.69669, 1.09635)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel18"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel18"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel18/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel18"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel18"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel8" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.11044, 0.527565, 0.116172)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel8"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel8"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel8/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel8"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel8"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel9" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.28426, 0.527565, 0.116172)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel9"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel9"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel9/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel9"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel9"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel10" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.28426, 0.527565, 1.14904)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel10"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel10"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel10/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel10"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel10"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel11" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.28426, 0.527565, 2.13081)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel11"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel11"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel11/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel11"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel11"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="FuelVoxel12" type="RigidBody3D" parent="." groups=["fuel"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.28426, 0.527565, 3.09447)
-script = ExtResource("2_n4pfn")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelVoxel12"]
-material_override = ExtResource("1_32hxm")
-mesh = SubResource("BoxMesh_2hori")
-
-[node name="Area3D" type="Area3D" parent="FuelVoxel12"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel12/Area3D"]
-shape = SubResource("BoxShape3D_equ3t")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelVoxel12"]
-shape = SubResource("BoxShape3D_ouonn")
-
-[node name="Flame" type="GPUParticles3D" parent="FuelVoxel12"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.707726, 0)
-amount = 200
-lifetime = 1.4
-explosiveness = 0.4
-randomness = 1.0
-draw_order = 3
-process_material = SubResource("ParticleProcessMaterial_gg0p1")
-draw_pass_1 = SubResource("QuadMesh_pb0fq")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(292.876, 0, 0, 0, 1.44036, 0, 0, 0, 47.4052, 0, -1.3724, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("BoxShape3D_bas6i")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-mesh = SubResource("BoxMesh_0cpu0")
-surface_material_override/0 = SubResource("StandardMaterial3D_s2e3i")
+[node name="Floor" parent="." instance=ExtResource("2_gi8d7")]
+
+[node name="FuelVoxel" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0651171, 0.606351, 0.539747)
+
+[node name="FuelVoxel2" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0651171, 0.606351, 0.740764)
+
+[node name="FuelVoxel3" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0651171, 0.606351, 0.959318)
+
+[node name="FuelVoxel4" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0708043, 0.606351, 1.18222)
+
+[node name="FuelVoxel5" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0666653, 0.606351, 1.40173)
+
+[node name="FuelVoxel6" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0253067, 0.606351, 0.539747)
+
+[node name="FuelVoxel7" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0253067, 0.606351, 0.740764)
+
+[node name="FuelVoxel8" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0253067, 0.606351, 0.959318)
+
+[node name="FuelVoxel9" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0253067, 0.606351, 1.18222)
+
+[node name="FuelVoxel10" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0237585, 0.606351, 1.40173)
+
+[node name="FuelVoxel11" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.233155, 0.606351, 0.539747)
+
+[node name="FuelVoxel12" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.233155, 0.606351, 0.740764)
+
+[node name="FuelVoxel13" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.233155, 0.606351, 0.959318)
+
+[node name="FuelVoxel14" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.233155, 0.606351, 1.18222)
+
+[node name="FuelVoxel15" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.231607, 0.606351, 1.40173)
+
+[node name="FuelVoxel16" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.44493, 0.606351, 0.539747)
+
+[node name="FuelVoxel17" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.44493, 0.606351, 0.740764)
+
+[node name="FuelVoxel18" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.44493, 0.606351, 0.959318)
+
+[node name="FuelVoxel19" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.44493, 0.606351, 1.18222)
+
+[node name="FuelVoxel20" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.443381, 0.606351, 1.40173)
+
+[node name="FuelVoxel21" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.666928, 0.606351, 0.539747)
+
+[node name="FuelVoxel22" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.666928, 0.606351, 0.740764)
+
+[node name="FuelVoxel23" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.666928, 0.606351, 0.959318)
+
+[node name="FuelVoxel24" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.666928, 0.606351, 1.18222)
+
+[node name="FuelVoxel25" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.665379, 0.606351, 1.40173)
+
+[node name="FuelVoxel26" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.876758, 0.606351, 0.539747)
+
+[node name="FuelVoxel27" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.876758, 0.606351, 0.740764)
+
+[node name="FuelVoxel28" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.876758, 0.606351, 0.959318)
+
+[node name="FuelVoxel29" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.876758, 0.606351, 1.18222)
+
+[node name="FuelVoxel30" parent="." instance=ExtResource("4_jclt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.87521, 0.606351, 1.40173)

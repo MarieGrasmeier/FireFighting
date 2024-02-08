@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://wvgovgdvn87n"]
+
+[ext_resource type="Script" path="res://Compartment.gd" id="1_58kqo"]
+
+[node name="Compartment" type="Node3D"]
+script = ExtResource("1_58kqo")

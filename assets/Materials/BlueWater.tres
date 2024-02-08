@@ -2,6 +2,8 @@
 
 [resource]
 transparency = 1
-albedo_color = Color(0, 0.360784, 0.956863, 0.360784)
+blend_mode = 1
+depth_draw_mode = 1
+albedo_color = Color(0.541176, 0.705882, 1, 0.709804)
 roughness = 0.0
 disable_receive_shadows = true

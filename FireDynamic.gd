@@ -6,11 +6,13 @@ var ignition_temperature: float = 200.0 # The temperature at which the voxel ign
 @export var current_temperature: float = 200.0 #The current temperature of the voxel
 @export var is_on_fire: bool = true # Whether the voxel is currently on fire
 @export var max_combustion_temperature: float = 500.0 # After reaching this value, the current temperature will not rise any further
-var heat_release: float = 5.0 # The amount of heat released when the voxel is on fire
+var heat_release: float = 1.0 # The amount of heat released when the voxel is on fire
 var heat_loss: float = 2.0 # The amount of heat lost when the voxel is not on fire
 var cooling_effect: float # The amount of cooling when hit by water
 var spray_angle
+var is_wet: bool
 @onready var player = $"../Player"
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -27,6 +29,10 @@ func _process(delta: float) -> void:
 		current_temperature -= heat_loss * delta
 		# Ensure temperature does not go below ambient/room temperature
 		current_temperature = max(current_temperature, 0.0)
+	
+	if is_wet == true:
+		if heat_loss <5:
+			heat_loss +=1
 
 	# Check for neighboring voxels that are on fire
 	check_neighbors()
@@ -53,6 +59,7 @@ func check_neighbors():
 func check_for_ignition():
 	if current_temperature > ignition_temperature and not is_on_fire:
 		is_on_fire = true
+		is_wet = false
 		# print("Igniting!")
 		# Optionally, perform additional actions upon ignition, like visual effects
 func check_if_extinguished():
@@ -66,24 +73,31 @@ func hit_by_water():
 	current_temperature -= cooling_effect
 	# Ensure temperature does not go below ambient/room temperature
 	current_temperature = max(current_temperature, 0.0)
+	is_wet = true
 	# print("hit by water")
 	print("Spray Angle", spray_angle)
 	print("Cooling Effect", cooling_effect)
+	
+
+	
 
 func update_visuals():
 	# Assuming the voxel has a MeshInstance3D as a child node named "Mesh"
 	var mesh_instance = $MeshInstance3D
 	var flame_particles = $Flame
+	var smoke_particles = $Smoke
 	if is_on_fire:
 		# Change the color to red
 		mesh_instance.material_override = create_color_material(Color.RED)
 		if !flame_particles.emitting:
 			flame_particles.emitting = true
+			smoke_particles.emitting = true
 		
 	else:
 		# Revert to the original appearance
 		mesh_instance.material_override = null
 		flame_particles.emitting = false
+		smoke_particles.emitting = false
 
 func create_color_material(color: Color) -> StandardMaterial3D:
 	var material = StandardMaterial3D.new()

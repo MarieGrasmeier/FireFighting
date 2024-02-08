@@ -27,6 +27,14 @@ var is_shooting: bool
 var spray_angle = 0 # Starting angle, adjust as needed
 var min_angle = 0 # Minimum angle
 var max_angle = 40 # Maximum angle
+@onready var stream_visuals = $Neck/Head/Eyes/Camera/Nozzle/StreamVisuals
+@onready var mask_blind = $Neck/Head/Eyes/Camera/MaskBlind
+
+#NozzleSettings
+@onready var nozzle = $Neck/Head/Eyes/Camera/Nozzle
+# Define the normal and shouldered positions
+var nozzle_normal_position = Vector3(0.4, -0.43, -0.6)  # Adjust as needed
+var nozzle_shouldered_position = Vector3(0.4, 0.1, -0.2)  # 0.4 meters higher
 
 var current_speed = 5.0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -47,7 +55,7 @@ var stand_after_roll = false
 func _ready():
 	
 	
-	
+	mask_blind.visible = false
 	nozzle_node = $Neck/Head/Eyes/Camera/Nozzle
 
 
@@ -79,18 +87,21 @@ func _process(delta):
 	if is_shooting:
 		for i in range(1):
 			shoot_water_particle()
+	else:
+		stream_visuals.emitting = false
 			
 	if mouse_capture == true:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	
+	nozzle_position()	
 
 func _physics_process(delta):
 	var input_dir = Input.get_vector("left", "right", "forward", "back")
 	
 	if Input.is_action_just_pressed("mouseCapture"):
 		mouse_capture = !mouse_capture
+	
 	
 	
 	
@@ -257,7 +268,8 @@ func shoot_water_particle():
 	# We need to find a perpendicular vector to the forward direction for the vertical rotation axis
 	var vertical_rotation_axis = horizontal_rotated_direction.cross(Vector3.UP).normalized()
 	var random_direction = horizontal_rotated_direction.rotated(vertical_rotation_axis, random_vertical_angle)
-
+	stream_visuals.process_material.spread = spray_angle
+	stream_visuals.emitting = true
 
 	# Set the initial velocity in the randomized forward direction
 	if water_particle_instance is RigidBody3D:
@@ -265,8 +277,26 @@ func shoot_water_particle():
 
 	get_tree().root.add_child(water_particle_instance)
 
+func nozzle_position():
+	if Input.is_action_pressed("ShoulderNozzle"):
+		nozzle.transform.origin = nozzle_shouldered_position
+		nozzle.rotation_degrees = Vector3(0, 0, 0)
+	else:
+		nozzle.transform.origin = nozzle_normal_position
+		nozzle.rotation_degrees = Vector3(12.6, 0, 0)  # Reset rotation to normal position
+	
 
 
-	
-	
-	
+
+
+
+func _on_smoke_layer_body_entered(body):
+	if body == self:
+		mask_blind.visible = true 
+		
+
+
+
+func _on_smoke_layer_body_exited(body):
+	if body == self:
+		mask_blind.visible = false

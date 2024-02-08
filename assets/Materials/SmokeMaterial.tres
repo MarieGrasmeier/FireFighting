@@ -1,0 +1,25 @@
+[gd_resource type="StandardMaterial3D" load_steps=7 format=3 uid="uid://wl4asprlmwrc"]
+
+[ext_resource type="Texture2D" uid="uid://bv4w8tws27daj" path="res://assets/textures/SmokeFr05.png" id="1_068mo"]
+[ext_resource type="Texture2D" uid="uid://b2100i8gosx2f" path="res://assets/textures/SmokeFr01.png" id="2_yektc"]
+[ext_resource type="Texture2D" uid="uid://ctvn3ueqbdmwu" path="res://assets/textures/SmokeFr02.png" id="3_3mqkh"]
+[ext_resource type="Texture2D" uid="uid://c0ph7xcgh0qxt" path="res://assets/textures/SmokeFr03.png" id="4_n5dpk"]
+[ext_resource type="Texture2D" uid="uid://bru6njqieqo3x" path="res://assets/textures/SmokeFr04.png" id="5_g1t10"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_m551s"]
+frames = 5
+frame_0/texture = ExtResource("1_068mo")
+frame_1/texture = ExtResource("2_yektc")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("3_3mqkh")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("4_n5dpk")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("5_g1t10")
+frame_4/duration = 0.3
+
+[resource]
+transparency = 1
+blend_mode = 3
+albedo_color = Color(0.654902, 0.654902, 0.654902, 0.772549)
+albedo_texture = SubResource("AnimatedTexture_m551s")
